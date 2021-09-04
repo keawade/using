@@ -1,0 +1,60 @@
+{
+  "name": "@keawade/using",
+  "version": "1.0.0",
+  "description": "Using implementation for disposable resources.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keawade/using.git"
+  },
+  "author": {
+    "name": "Keith Wade",
+    "email": "keawade@protonmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/keawade/using/issues"
+  },
+  "homepage": "https://github.com/keawade/using",
+  "scripts": {
+    "prebuild": "rm -rf dist/",
+    "build": "tsc",
+    "bump": "npm --no-git-tag-version version",
+    "check": "npm run check:lint && npm run check:build",
+    "check:build": "tsc --noEmit",
+    "check:lint": "eslint src/ --ext .ts",
+    "test": "jest",
+    "test:watch": "npm run test -- --watch",
+    "prepare": "husky install",
+    "prepublishOnly": "npm run build",
+    "pre-push": "npm run lint"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.30.0",
+    "@typescript-eslint/parser": "^4.30.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.2",
+    "jest": "^27.1.0",
+    "prettier": "^2.3.2",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
+  },
+  "keywords": [
+    "using",
+    "disposable",
+    "dispose",
+    "destroyable",
+    "destroy"
+  ],
+  "engines": {
+    "node": ">=10"
+  }
+}
