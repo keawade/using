@@ -1,10 +1,5 @@
 # Using
 
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/keawade/using/ci/main)
-![npm](https://img.shields.io/npm/v/@keawade/using)
-![NPM](https://img.shields.io/npm/l/@keawade/using)
-![Snyk Vulnerabilities for npm package version](https://img.shields.io/snyk/vulnerabilities/npm/@keawade/using)
-
 Provides a convenient syntax that ensures the correct use of Disposable or
 Destroyable objects. That is, objects with either a `dispose()` or `destroy()`
 methods on them.
