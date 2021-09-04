@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+jobs:
+  test-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run checks
+        run: npm run check
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Setup variables
+        run: |
+          export APP_VERSION=$(jq -r .version package.json)
+          export BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "IS_PR=${{ github.event_name == 'pull_request' }}" >> $GITHUB_ENV
+          if [ $BRANCH_NAME = "main" ]; then
+            echo "PACKAGE_VERSION=$APP_VERSION" >> $GITHUB_ENV
+            echo "VERSION_TAG=latest" >> $GITHUB_ENV
+          else
+            echo "PACKAGE_VERSION=$APP_VERSION-alpha.$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+            echo "VERSION_TAG=alpha" >> $GITHUB_ENV
+          fi
+      - name: Build library
+        if: env.IS_PR == 'false'
+        run: npm run build
+
+      - name: Version
+        if: env.BRANCH_NAME != 'main' && env.IS_PR == 'false'
+        run: npm version "$PACKAGE_VERSION" --no-git-tag-version
+
+      - name: NPM Publish
+        if: env.IS_PR == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        run: npm publish --tag=$VERSION_TAG --access=public
