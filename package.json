@@ -31,7 +31,7 @@
     "test:watch": "npm run test -- --watch",
     "prepare": "husky install",
     "prepublishOnly": "npm run build",
-    "pre-push": "npm run lint"
+    "pre-push": "npm run check"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
